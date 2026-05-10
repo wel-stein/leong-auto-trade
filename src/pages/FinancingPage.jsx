@@ -283,7 +283,7 @@ export default function FinancingPage() {
         <section className="mb-14 relative rounded-3xl overflow-hidden">
           <div className="absolute inset-0">
             <img src="https://images.unsplash.com/photo-1511919884226-fd3cad34687c?w=1200&q=80"
-              alt="" className="w-full h-full object-cover opacity-15" />
+              alt="" loading="lazy" className="w-full h-full object-cover opacity-15" />
             <div className="absolute inset-0 bg-gradient-to-r from-[#0a0b12] to-[#0a0b12]/60" />
           </div>
           <div className="relative px-8 py-14 max-w-xl">

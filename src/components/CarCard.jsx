@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { Heart, Fuel, Gauge, Zap, Star, ArrowUpRight } from 'lucide-react'
 import { useState } from 'react'
 
@@ -22,9 +23,10 @@ export default function CarCard({ car, featured = false }) {
     new Intl.NumberFormat('en-US').format(n) + ' mi'
 
   return (
-    <article
-      className={`group relative glass-card rounded-2xl overflow-hidden
-                  transition-all duration-500 ease-out cursor-pointer
+    <Link
+      to={`/inventory/${car.id}`}
+      className={`group relative glass-card rounded-2xl overflow-hidden block
+                  transition-all duration-500 ease-out
                   hover:shadow-card-hover hover:-translate-y-1.5
                   hover:border-white/[0.12]
                   ${featured ? 'ring-1 ring-primary-500/20' : ''}`}
@@ -35,6 +37,7 @@ export default function CarCard({ car, featured = false }) {
           <img
             src={car.image}
             alt={`${car.year} ${car.make} ${car.model}`}
+            loading="lazy"
             className="w-full h-full object-cover object-center
                        transition-transform duration-700 ease-out
                        group-hover:scale-110"
@@ -50,17 +53,14 @@ export default function CarCard({ car, featured = false }) {
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
 
         {/* Badge */}
-        <span
-          className={`badge absolute top-3 left-3 border
-                      ${BADGE_STYLES[car.badgeColor] || BADGE_STYLES.blue}`}
-        >
+        <span className={`badge absolute top-3 left-3 border ${BADGE_STYLES[car.badgeColor] || BADGE_STYLES.blue}`}>
           {car.badge}
         </span>
 
         {/* Wishlist button */}
         <button
-          aria-label="Save to wishlist"
-          onClick={(e) => { e.stopPropagation(); setLiked(!liked) }}
+          aria-label={liked ? `Remove ${car.make} ${car.model} from wishlist` : `Save ${car.make} ${car.model} to wishlist`}
+          onClick={(e) => { e.preventDefault(); setLiked(!liked) }}
           className={`absolute top-3 right-3 w-8 h-8 rounded-full flex items-center justify-center
                       backdrop-blur-sm border transition-all duration-200
                       ${liked
@@ -120,18 +120,18 @@ export default function CarCard({ car, featured = false }) {
             <p className="text-slate-500 text-[11px] uppercase tracking-wider">Price</p>
             <p className="text-white font-black text-xl tracking-tight">{fmtPrice(car.price)}</p>
           </div>
-          <button
+          <span
             className="flex items-center gap-1.5 px-4 py-2 rounded-xl
                        bg-primary-500/10 border border-primary-500/25
                        text-primary-400 text-xs font-semibold
-                       hover:bg-primary-500 hover:text-white hover:border-transparent
-                       transition-all duration-200 group/btn"
+                       group-hover:bg-primary-500 group-hover:text-white group-hover:border-transparent
+                       transition-all duration-200"
           >
             View Details
-            <ArrowUpRight size={13} className="transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
-          </button>
+            <ArrowUpRight size={13} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          </span>
         </div>
       </div>
-    </article>
+    </Link>
   )
 }

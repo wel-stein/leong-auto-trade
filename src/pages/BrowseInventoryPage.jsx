@@ -38,13 +38,14 @@ function VehicleCard({ car }) {
                  hover:border-white/[0.14] hover:-translate-y-1.5 hover:shadow-card-hover
                  transition-all duration-400 block">
       <div className="relative aspect-video overflow-hidden bg-surface-high">
-        <img src={car.image} alt={`${car.year} ${car.make} ${car.model}`}
+        <img src={car.image} alt={`${car.year} ${car.make} ${car.model}`} loading="lazy"
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent" />
         <span className={`badge absolute top-3 left-3 border ${BADGE_COLORS[car.badgeColor] || BADGE_COLORS.blue}`}>
           {car.badge}
         </span>
         <button onClick={e => { e.preventDefault(); setLiked(!liked) }}
+          aria-label={liked ? `Remove ${car.make} ${car.model} from saved` : `Save ${car.make} ${car.model}`}
           className={`absolute top-3 right-3 w-8 h-8 rounded-full flex items-center justify-center
                       backdrop-blur-sm border transition-all
                       ${liked ? 'bg-red-500/30 border-red-500/50 text-red-400' : 'bg-black/30 border-white/10 text-slate-400 hover:text-white'}`}>
@@ -275,8 +276,8 @@ export default function BrowseInventoryPage() {
                 </div>
                 {/* Layout toggle */}
                 <div className="flex items-center gap-1 p-1 bg-surface-high rounded-xl border border-white/[0.06]">
-                  {[{ id: 'grid', I: Grid3X3 }, { id: 'list', I: List }].map(({ id, I }) => (
-                    <button key={id} onClick={() => setLayout(id)}
+                  {[{ id: 'grid', I: Grid3X3, label: 'Grid view' }, { id: 'list', I: List, label: 'List view' }].map(({ id, I, label }) => (
+                    <button key={id} onClick={() => setLayout(id)} aria-label={label}
                       className={`p-1.5 rounded-lg transition-all
                         ${layout === id ? 'bg-primary-500/20 text-primary-400' : 'text-slate-500 hover:text-slate-300'}`}>
                       <I size={14} />
@@ -293,14 +294,14 @@ export default function BrowseInventoryPage() {
                   <span key={s} className="flex items-center gap-1 px-2.5 py-1 rounded-full text-xs
                                           bg-primary-500/10 border border-primary-500/25 text-primary-300">
                     {s}
-                    <button onClick={() => toggle(selectedStyles, setStyles, s)}><X size={11} /></button>
+                    <button aria-label={`Remove ${s} filter`} onClick={() => toggle(selectedStyles, setStyles, s)}><X size={11} /></button>
                   </span>
                 ))}
                 {selectedFuels.map(f => (
                   <span key={f} className="flex items-center gap-1 px-2.5 py-1 rounded-full text-xs
                                           bg-primary-500/10 border border-primary-500/25 text-primary-300">
                     {f}
-                    <button onClick={() => toggle(selectedFuels, setFuels, f)}><X size={11} /></button>
+                    <button aria-label={`Remove ${f} filter`} onClick={() => toggle(selectedFuels, setFuels, f)}><X size={11} /></button>
                   </span>
                 ))}
               </div>

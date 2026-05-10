@@ -61,6 +61,22 @@ export default function VehicleDetailsPage() {
 
   return (
     <div className="min-h-screen pt-[72px]">
+      {/* Mobile floating CTA bar — hidden on lg (sidebar visible there) */}
+      <div className="lg:hidden fixed bottom-16 md:bottom-0 left-0 right-0 z-40
+                      glass border-t border-white/[0.08] px-4 py-3
+                      flex items-center gap-3">
+        <div className="flex-1">
+          <p className="text-white font-black text-lg leading-none">{fmt(car.price)}</p>
+          <p className="text-slate-500 text-xs">{car.year} {car.make} {car.model}</p>
+        </div>
+        <button className="btn-ghost py-2.5 px-4 text-sm shrink-0">
+          <Calendar size={15} /> Test Drive
+        </button>
+        <button className="btn-primary py-2.5 px-4 text-sm shrink-0">
+          <Phone size={15} /> Contact
+        </button>
+      </div>
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
 
         {/* Breadcrumb */}
@@ -85,6 +101,7 @@ export default function VehicleDetailsPage() {
               <span className="text-white text-xs font-semibold">{activeImg + 1} / {images.length} Photos</span>
             </div>
             <button onClick={() => setLiked(!liked)}
+              aria-label={liked ? `Remove ${car.make} ${car.model} from wishlist` : `Save ${car.make} ${car.model} to wishlist`}
               className={`absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center
                           backdrop-blur-sm border transition-all duration-200
                           ${liked ? 'bg-red-500/30 border-red-500/50 text-red-400' : 'glass border-white/10 text-slate-300 hover:text-white'}`}>
@@ -96,9 +113,10 @@ export default function VehicleDetailsPage() {
           <div className="hidden lg:grid grid-rows-3 gap-3 h-full">
             {images.map((img, i) => (
               <button key={i} onClick={() => setActiveImg(i)}
+                aria-label={`View photo ${i + 1}`}
                 className={`rounded-xl overflow-hidden group relative transition-all duration-200
                   ${activeImg === i ? 'ring-2 ring-primary-500 ring-offset-2 ring-offset-[#0a0b12]' : 'opacity-70 hover:opacity-100'}`}>
-                <img src={img} alt={`View ${i + 1}`}
+                <img src={img} alt={`Vehicle photo ${i + 1}`} loading="lazy"
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
               </button>
             ))}
@@ -109,9 +127,10 @@ export default function VehicleDetailsPage() {
         <div className="flex gap-2 mb-8 lg:hidden">
           {images.map((img, i) => (
             <button key={i} onClick={() => setActiveImg(i)}
+              aria-label={`View photo ${i + 1}`}
               className={`w-16 h-12 rounded-lg overflow-hidden shrink-0 transition-all
                 ${activeImg === i ? 'ring-2 ring-primary-500' : 'opacity-60 hover:opacity-100'}`}>
-              <img src={img} alt="" className="w-full h-full object-cover" />
+              <img src={img} alt={`Vehicle photo ${i + 1}`} loading="lazy" className="w-full h-full object-cover" />
             </button>
           ))}
         </div>
@@ -246,7 +265,7 @@ export default function VehicleDetailsPage() {
 
                 <div className="flex items-center justify-between mt-5 pt-5 border-t border-white/[0.06] text-slate-500 text-xs">
                   <span className="flex items-center gap-1.5"><MapPin size={12} /> Seattle, WA</span>
-                  <button className="flex items-center gap-1.5 hover:text-slate-300 transition-colors">
+                  <button aria-label="Share this listing" className="flex items-center gap-1.5 hover:text-slate-300 transition-colors">
                     <Share2 size={12} /> Share
                   </button>
                 </div>

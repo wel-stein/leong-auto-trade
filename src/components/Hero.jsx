@@ -27,6 +27,7 @@ export default function Hero({ onSearch }) {
         <img
           src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=1600&q=80"
           alt=""
+          loading="eager"
           className="w-full h-full object-cover object-center opacity-25"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-[#0a0b12]/50 via-[#0a0b12]/70 to-[#0a0b12]" />
@@ -66,8 +67,8 @@ export default function Hero({ onSearch }) {
           <div className="flex flex-wrap gap-3 mb-10 animate-fade-up animate-delay-300">
             {[
               { icon: Shield, text: 'Verified Listings' },
-              { icon: Star, text: '4.9 / 5 Rating' },
-              { icon: Zap, text: 'Instant Financing' },
+              { icon: Star,   text: '4.9 / 5 Rating' },
+              { icon: Zap,    text: 'Instant Financing' },
             ].map(({ icon: Icon, text }) => (
               <div key={text}
                    className="flex items-center gap-2 px-3 py-1.5 rounded-full
@@ -85,7 +86,8 @@ export default function Hero({ onSearch }) {
               Find Your Perfect Match
             </p>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
+            {/* 2-col on mobile, 3-col on sm+ */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4">
               {/* Make */}
               <div className="relative">
                 <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wider mb-1.5 px-1">
@@ -95,6 +97,7 @@ export default function Hero({ onSearch }) {
                   <select
                     value={make}
                     onChange={handleMakeChange}
+                    aria-label="Select car make"
                     className="input-dark appearance-none pr-9 cursor-pointer"
                   >
                     {MAKES.map(m => (
@@ -114,6 +117,7 @@ export default function Hero({ onSearch }) {
                   <select
                     value={model}
                     onChange={e => setModel(e.target.value)}
+                    aria-label="Select car model"
                     className="input-dark appearance-none pr-9 cursor-pointer"
                   >
                     {models.map(m => (
@@ -124,8 +128,8 @@ export default function Hero({ onSearch }) {
                 </div>
               </div>
 
-              {/* Price range */}
-              <div className="relative">
+              {/* Price range — full width on mobile, normal on sm+ */}
+              <div className="relative col-span-2 sm:col-span-1">
                 <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wider mb-1.5 px-1">
                   Price Range
                 </label>
@@ -133,6 +137,7 @@ export default function Hero({ onSearch }) {
                   <select
                     value={priceRange}
                     onChange={e => setPriceRange(e.target.value)}
+                    aria-label="Select price range"
                     className="input-dark appearance-none pr-9 cursor-pointer"
                   >
                     <option value="">Any Price</option>

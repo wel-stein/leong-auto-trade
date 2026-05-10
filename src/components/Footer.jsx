@@ -46,9 +46,9 @@ export default function Footer() {
   return (
     <footer className="border-t border-white/[0.06] bg-surface-low">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-10 mb-12">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-8 md:gap-10 mb-12">
           {/* Brand column */}
-          <div className="md:col-span-1">
+          <div className="col-span-2 md:col-span-1">
             <Link to="/" className="flex items-center gap-2.5 mb-4 group">
               <div className="w-9 h-9 rounded-xl bg-primary-500 flex items-center justify-center shadow-glow-blue">
                 <Car size={18} className="text-white" strokeWidth={2.5} />
@@ -80,7 +80,7 @@ export default function Footer() {
                 {items.map(({ label, to }) => (
                   <li key={label}>
                     <Link to={to}
-                      className="text-slate-500 hover:text-slate-300 text-sm transition-colors">
+                      className="text-slate-400 hover:text-white text-sm transition-colors">
                       {label}
                     </Link>
                   </li>
@@ -110,12 +110,12 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4
                         pt-8 border-t border-white/[0.06]">
-          <p className="text-slate-600 text-xs">
+          <p className="text-slate-400 text-xs">
             © {new Date().getFullYear()} AutoPremium Inc. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
             {['Privacy Policy', 'Terms of Service', 'Cookie Preferences'].map(link => (
-              <a key={link} href="#" className="text-slate-600 hover:text-slate-400 text-xs transition-colors">
+              <a key={link} href="#" className="text-slate-400 hover:text-slate-200 text-xs transition-colors">
                 {link}
               </a>
             ))}

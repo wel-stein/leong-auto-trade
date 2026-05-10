@@ -97,6 +97,20 @@ export default function DashboardPage() {
 
       {/* Main content */}
       <main className="flex-1 px-4 sm:px-6 py-8 min-w-0">
+        {/* Mobile horizontal section nav — hidden on md+ where sidebar is shown */}
+        <nav className="md:hidden flex items-center gap-2 overflow-x-auto pb-2 mb-6 scrollbar-hide -mx-4 px-4">
+          {NAV_ITEMS.map(({ icon: Icon, label }) => (
+            <button key={label} onClick={() => setActiveNav(label)}
+              className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap shrink-0 transition-all border
+                ${activeNav === label
+                  ? 'bg-primary-500/15 text-primary-300 border-primary-500/30'
+                  : 'text-slate-400 border-white/[0.08] hover:text-white hover:border-white/15'}`}>
+              <Icon size={13} />
+              {label}
+            </button>
+          ))}
+        </nav>
+
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
@@ -104,7 +118,7 @@ export default function DashboardPage() {
             <p className="text-slate-500 text-sm">Manage your inventory, tracked vehicles, and active sales.</p>
           </div>
           <div className="flex items-center gap-3">
-            <button className="relative w-9 h-9 rounded-xl border border-white/[0.08] flex items-center justify-center
+            <button aria-label="Notifications" className="relative w-9 h-9 rounded-xl border border-white/[0.08] flex items-center justify-center
                                text-slate-400 hover:text-white hover:border-white/15 transition-all">
               <Bell size={16} />
               <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-primary-500 rounded-full" />
@@ -145,7 +159,7 @@ export default function DashboardPage() {
                   <Link to={`/inventory/${car.id}`} key={car.id}
                     className="glass-card rounded-2xl overflow-hidden border border-white/[0.06]
                                hover:border-primary-500/30 transition-all group block">
-                    <img src={car.image} alt={car.name}
+                    <img src={car.image} alt={car.name} loading="lazy"
                       className="w-full aspect-video object-cover transition-transform duration-500 group-hover:scale-105" />
                     <div className="p-4">
                       <h3 className="text-white font-bold text-sm mb-2">{car.name}</h3>
@@ -168,7 +182,7 @@ export default function DashboardPage() {
                 {/* Hero rec */}
                 <div className="sm:col-span-2 relative group overflow-hidden rounded-2xl h-56 cursor-pointer border border-white/[0.06]">
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10" />
-                  <img src={FEATURED_CARS[4].image} alt="Recommended"
+                  <img src={FEATURED_CARS[4].image} alt="Recommended vehicle" loading="lazy"
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
                   <div className="absolute bottom-0 left-0 p-5 z-20">
                     <span className="badge bg-primary-500 text-white border-0 mb-2">Best Match</span>
@@ -218,7 +232,7 @@ export default function DashboardPage() {
                     </div>
                     <div className="flex items-center justify-between">
                       <p className="text-primary-400 font-black text-base">{fmt(offer.price)}</p>
-                      <button className="text-slate-500 hover:text-slate-300 transition-colors">
+                      <button aria-label={`More options for ${offer.name}`} className="text-slate-500 hover:text-slate-300 transition-colors">
                         <MoreVertical size={15} />
                       </button>
                     </div>

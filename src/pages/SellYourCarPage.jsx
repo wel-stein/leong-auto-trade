@@ -72,7 +72,7 @@ export default function SellYourCarPage() {
       <section className="relative min-h-[640px] flex items-center overflow-hidden">
         <div className="absolute inset-0">
           <img src="https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?w=1400&q=80"
-            alt="" className="w-full h-full object-cover opacity-20" />
+            alt="" loading="eager" className="w-full h-full object-cover opacity-20" />
           <div className="absolute inset-0 bg-gradient-to-r from-[#0a0b12] via-[#0a0b12]/85 to-[#0a0b12]/50" />
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#0a0b12]" />
         </div>
@@ -268,7 +268,7 @@ export default function SellYourCarPage() {
               </div>
               <p className="text-white text-xl font-medium italic leading-relaxed mb-6">{TESTIMONIALS[0].quote}</p>
               <div className="flex items-center gap-3 pt-4 border-t border-white/[0.06]">
-                <img src={TESTIMONIALS[0].avatar} alt={TESTIMONIALS[0].name}
+                <img src={TESTIMONIALS[0].avatar} alt={TESTIMONIALS[0].name} loading="lazy"
                   className="w-12 h-12 rounded-full object-cover border border-white/10" />
                 <div>
                   <p className="text-white font-bold">{TESTIMONIALS[0].name}</p>
@@ -287,7 +287,7 @@ export default function SellYourCarPage() {
                   </div>
                   <p className="text-slate-300 text-sm leading-relaxed mb-4">{t.quote}</p>
                   <div className="flex items-center gap-2">
-                    <img src={t.avatar} alt={t.name} className="w-8 h-8 rounded-full object-cover" />
+                    <img src={t.avatar} alt={t.name} loading="lazy" className="w-8 h-8 rounded-full object-cover" />
                     <span className="text-white text-sm font-semibold">{t.name}</span>
                     <span className="text-slate-600 text-xs">· {t.role}</span>
                   </div>
