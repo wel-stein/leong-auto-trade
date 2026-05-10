@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { ArrowRight, CheckCircle2, DollarSign, Clock, Users } from 'lucide-react'
 
 const PERKS = [
@@ -55,10 +56,10 @@ export default function SellCTA() {
             </ul>
 
             <div className="flex flex-wrap gap-4">
-              <a href="#" className="btn-primary">
+              <Link to="/sell" className="btn-primary">
                 List Your Car Free
                 <ArrowRight size={16} />
-              </a>
+              </Link>
               <button className="btn-ghost">
                 Learn How It Works
               </button>

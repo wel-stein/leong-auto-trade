@@ -1,28 +1,30 @@
-import { useState } from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
-import Hero from './components/Hero'
-import StatsBar from './components/StatsBar'
-import BentoShowcase from './components/BentoShowcase'
-import Inventory from './components/Inventory'
-import Testimonials from './components/Testimonials'
-import SellCTA from './components/SellCTA'
 import Footer from './components/Footer'
+import HomePage from './pages/HomePage'
+import BrowseInventoryPage from './pages/BrowseInventoryPage'
+import VehicleDetailsPage from './pages/VehicleDetailsPage'
+import FinancingPage from './pages/FinancingPage'
+import SellYourCarPage from './pages/SellYourCarPage'
+import DashboardPage from './pages/DashboardPage'
 
 export default function App() {
-  const [searchFilter, setSearchFilter] = useState(null)
-
   return (
-    <div className="min-h-screen bg-[#0a0b12] text-white">
-      <Navbar />
-      <main>
-        <Hero onSearch={setSearchFilter} />
-        <StatsBar />
-        <BentoShowcase />
-        <Inventory searchFilter={searchFilter} />
-        <Testimonials />
-        <SellCTA />
-      </main>
-      <Footer />
-    </div>
+    <BrowserRouter>
+      <div className="min-h-screen bg-[#0a0b12] text-white flex flex-col">
+        <Navbar />
+        <main className="flex-1">
+          <Routes>
+            <Route path="/"              element={<HomePage />} />
+            <Route path="/inventory"     element={<BrowseInventoryPage />} />
+            <Route path="/inventory/:id" element={<VehicleDetailsPage />} />
+            <Route path="/financing"     element={<FinancingPage />} />
+            <Route path="/sell"          element={<SellYourCarPage />} />
+            <Route path="/dashboard"     element={<DashboardPage />} />
+          </Routes>
+        </main>
+        <Footer />
+      </div>
+    </BrowserRouter>
   )
 }

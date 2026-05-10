@@ -1,10 +1,36 @@
+import { Link } from 'react-router-dom'
 import { Car, Twitter, Instagram, Linkedin, Youtube, ArrowUpRight } from 'lucide-react'
+import { useState } from 'react'
 
 const LINKS = {
-  'Marketplace': ['Browse Inventory', 'Featured Listings', 'New Arrivals', 'Price Drops', 'Sell Your Car'],
-  'Finance': ['Auto Loans', 'Pre-Approval', 'Insurance', 'Warranty', 'Trade-In Value'],
-  'Company': ['About Us', 'Careers', 'Press', 'Partners', 'Contact'],
-  'Support': ['Help Center', 'Buyer Guide', 'Seller Guide', 'Safety Tips', 'Terms & Privacy'],
+  'Marketplace': [
+    { label: 'Browse Inventory', to: '/inventory' },
+    { label: 'Featured Listings', to: '/inventory' },
+    { label: 'New Arrivals', to: '/inventory' },
+    { label: 'Sell Your Car', to: '/sell' },
+    { label: 'Price Drops', to: '/inventory' },
+  ],
+  'Finance': [
+    { label: 'Auto Loans', to: '/financing' },
+    { label: 'Pre-Approval', to: '/financing' },
+    { label: 'Insurance', to: '/financing' },
+    { label: 'Warranty', to: '/financing' },
+    { label: 'Trade-In Value', to: '/sell' },
+  ],
+  'Company': [
+    { label: 'About Us', to: '/' },
+    { label: 'Careers', to: '/' },
+    { label: 'Press', to: '/' },
+    { label: 'Partners', to: '/' },
+    { label: 'Contact', to: '/' },
+  ],
+  'Support': [
+    { label: 'Help Center', to: '/' },
+    { label: 'Buyer Guide', to: '/inventory' },
+    { label: 'Seller Guide', to: '/sell' },
+    { label: 'Safety Tips', to: '/' },
+    { label: 'Terms & Privacy', to: '/' },
+  ],
 }
 
 const SOCIALS = [
@@ -15,33 +41,31 @@ const SOCIALS = [
 ]
 
 export default function Footer() {
+  const [email, setEmail] = useState('')
+
   return (
     <footer className="border-t border-white/[0.06] bg-surface-low">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16">
         <div className="grid grid-cols-1 md:grid-cols-5 gap-10 mb-12">
           {/* Brand column */}
           <div className="md:col-span-1">
-            <div className="flex items-center gap-2.5 mb-4">
+            <Link to="/" className="flex items-center gap-2.5 mb-4 group">
               <div className="w-9 h-9 rounded-xl bg-primary-500 flex items-center justify-center shadow-glow-blue">
                 <Car size={18} className="text-white" strokeWidth={2.5} />
               </div>
               <span className="text-white font-bold text-lg tracking-tight">
                 Auto<span className="gradient-text">Premium</span>
               </span>
-            </div>
+            </Link>
             <p className="text-slate-500 text-sm leading-relaxed mb-6">
               The world's most trusted marketplace for premium and exotic automobiles.
             </p>
             <div className="flex items-center gap-3">
               {SOCIALS.map(({ Icon, label }) => (
-                <a
-                  key={label}
-                  href="#"
-                  aria-label={label}
+                <a key={label} href="#" aria-label={label}
                   className="w-9 h-9 flex items-center justify-center rounded-xl
                              border border-white/[0.08] text-slate-500 hover:text-white
-                             hover:border-white/20 hover:bg-white/5 transition-all duration-200"
-                >
+                             hover:border-white/20 hover:bg-white/5 transition-all duration-200">
                   <Icon size={15} />
                 </a>
               ))}
@@ -53,14 +77,12 @@ export default function Footer() {
             <div key={section}>
               <p className="text-white font-semibold text-sm mb-4">{section}</p>
               <ul className="space-y-3">
-                {items.map(item => (
-                  <li key={item}>
-                    <a
-                      href="#"
-                      className="text-slate-500 hover:text-slate-300 text-sm transition-colors"
-                    >
-                      {item}
-                    </a>
+                {items.map(({ label, to }) => (
+                  <li key={label}>
+                    <Link to={to}
+                      className="text-slate-500 hover:text-slate-300 text-sm transition-colors">
+                      {label}
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -76,11 +98,9 @@ export default function Footer() {
             <p className="text-slate-500 text-sm">Get weekly picks and price alerts delivered to your inbox.</p>
           </div>
           <div className="flex gap-2 w-full sm:w-auto">
-            <input
-              type="email"
+            <input type="email" value={email} onChange={e => setEmail(e.target.value)}
               placeholder="your@email.com"
-              className="input-dark flex-1 sm:w-56"
-            />
+              className="input-dark flex-1 sm:w-56" />
             <button className="btn-primary shrink-0 py-3">
               Subscribe <ArrowUpRight size={15} />
             </button>
