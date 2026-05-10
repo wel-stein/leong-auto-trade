@@ -16,8 +16,11 @@ export default function Navbar() {
       <header className="fixed top-0 left-0 right-0 z-50 bg-surface/90 backdrop-blur-md border-b border-[#c2c6d6]/20 shadow-sm">
         <nav className="max-w-[1280px] mx-auto px-6 h-20 flex items-center justify-between gap-6">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 shrink-0">
-            <span className="text-on-background text-2xl font-bold tracking-tight">AutoPremium</span>
+          <Link to="/" className="flex items-center gap-2.5 shrink-0">
+            <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
+              <span className="material-symbols-outlined text-[18px] text-white">directions_car</span>
+            </div>
+            <span className="text-on-background text-xl font-bold tracking-tight">AutoPremium</span>
           </Link>
 
           {/* Desktop nav links */}
@@ -27,14 +30,21 @@ export default function Navbar() {
                 <NavLink
                   to={to}
                   className={({ isActive }) =>
-                    `px-4 py-2 text-sm font-semibold transition-colors ${
+                    `relative px-4 py-2 text-sm font-semibold transition-colors rounded-lg ${
                       isActive
-                        ? 'text-primary border-b-2 border-primary pb-1'
-                        : 'text-on-surface-variant hover:text-primary'
+                        ? 'text-primary bg-primary/8'
+                        : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container'
                     }`
                   }
                 >
-                  {label}
+                  {({ isActive }) => (
+                    <>
+                      {label}
+                      {isActive && (
+                        <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-primary rounded-full" />
+                      )}
+                    </>
+                  )}
                 </NavLink>
               </li>
             ))}
@@ -43,10 +53,17 @@ export default function Navbar() {
           {/* Right actions */}
           <div className="hidden md:flex items-center gap-3">
             <Link
-              to="/"
-              className="px-5 py-2 rounded-xl bg-primary text-on-primary text-sm font-semibold hover:bg-primary-container transition-colors"
+              to="/inventory"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-lg border border-[#c2c6d6]/30 text-on-surface-variant text-sm font-medium hover:text-primary hover:border-primary/30 transition-colors"
             >
-              Contact Us
+              <span className="material-symbols-outlined text-[16px]">search</span>
+              Search
+            </Link>
+            <Link
+              to="/sell"
+              className="px-5 py-2 rounded-lg bg-primary text-on-primary text-sm font-semibold hover:bg-primary-container transition-colors"
+            >
+              Get an Offer
             </Link>
           </div>
 
@@ -79,7 +96,7 @@ export default function Navbar() {
                 className={({ isActive }) =>
                   `px-4 py-3 rounded-xl text-sm font-semibold transition-colors ${
                     isActive
-                      ? 'text-primary bg-primary-fixed/40'
+                      ? 'text-primary bg-primary/8'
                       : 'text-on-surface-variant hover:text-primary hover:bg-surface-container'
                   }`
                 }
@@ -87,13 +104,20 @@ export default function Navbar() {
                 {label}
               </NavLink>
             ))}
-            <div className="mt-auto">
+            <div className="mt-auto flex flex-col gap-2">
               <Link
-                to="/"
+                to="/inventory"
+                onClick={() => setMobileOpen(false)}
+                className="block w-full text-center px-5 py-3 rounded-xl border border-[#c2c6d6]/30 text-on-surface text-sm font-semibold hover:border-primary/30 hover:text-primary transition-colors"
+              >
+                Search Inventory
+              </Link>
+              <Link
+                to="/sell"
                 onClick={() => setMobileOpen(false)}
                 className="block w-full text-center px-5 py-3 rounded-xl bg-primary text-on-primary text-sm font-semibold"
               >
-                Contact Us
+                Get an Offer
               </Link>
             </div>
           </aside>

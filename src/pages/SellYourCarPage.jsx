@@ -58,7 +58,7 @@ export default function SellYourCarPage() {
   return (
     <div className="pt-20 min-h-screen">
       {/* Hero */}
-      <section className="relative min-h-[800px] flex items-center overflow-hidden py-xl">
+      <section className="relative min-h-[640px] flex items-center overflow-hidden py-xl">
         {/* Background */}
         <div className="absolute inset-0">
           <img

@@ -2,8 +2,8 @@ import { useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { ALL_CARS } from '../data/cars'
 
-const BODY_STYLES = ['SUV', 'Sedan', 'Coupe', 'Truck', 'Convertible', 'Wagon']
-const FUEL_TYPES = ['Gasoline', 'Electric', 'Hybrid', 'Diesel']
+const BODY_STYLES = ['SUV', 'Sedan', 'Coupe', 'Convertible', 'Wagon']
+const FUEL_TYPES = ['Petrol', 'Electric', 'Hybrid', 'Diesel']
 const TRANSMISSIONS = ['All Types', 'Automatic', 'Manual']
 const SORT_OPTIONS = [
   'Newest Listed',
@@ -47,9 +47,21 @@ function VehicleCard({ car }) {
       </div>
 
       <div className="p-4">
-        <h3 className="font-semibold text-base text-on-surface mb-2 leading-tight">
-          {car.year} {car.make} {car.model}
-        </h3>
+        <div className="flex items-start justify-between gap-2 mb-2">
+          <h3 className="font-semibold text-base text-on-surface leading-tight">
+            {car.year} {car.make} {car.model}
+          </h3>
+          {car.rating && (
+            <div className="flex items-center gap-1 shrink-0">
+              <span
+                className="material-symbols-outlined text-[14px] text-yellow-500"
+                style={{ fontVariationSettings: "'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24" }}
+              >star</span>
+              <span className="text-xs font-semibold text-on-surface">{car.rating}</span>
+              <span className="text-xs text-on-surface-variant">({car.reviews})</span>
+            </div>
+          )}
+        </div>
 
         <div className="flex flex-wrap gap-1 mb-3">
           <span className="bg-surface-container text-on-secondary-container text-xs px-2 py-1 rounded-full">{car.bodyStyle}</span>
@@ -70,7 +82,7 @@ function VehicleCard({ car }) {
           </div>
           <div className="flex flex-col items-center gap-0.5">
             <span className="material-symbols-outlined text-[18px] text-on-surface-variant">
-              {car.fuel === 'Electric' ? 'bolt' : 'local_gas_station'}
+              {car.fuel === 'Electric' ? 'bolt' : car.fuel === 'Hybrid' ? 'ev_station' : 'local_gas_station'}
             </span>
             <span className="text-xs text-on-surface-variant font-medium">{car.fuel}</span>
           </div>
@@ -119,8 +131,7 @@ export default function BrowseInventoryPage() {
       )
     if (selectedStyles.length) cars = cars.filter((c) => selectedStyles.includes(c.bodyStyle))
     if (selectedFuels.length) {
-      const map = { Gasoline: 'Petrol', Electric: 'Electric', Hybrid: 'Hybrid', Diesel: 'Diesel' }
-      cars = cars.filter((c) => selectedFuels.some((f) => c.fuel === (map[f] || f)))
+      cars = cars.filter((c) => selectedFuels.includes(c.fuel))
     }
     if (transmission !== 'All Types') cars = cars.filter((c) => c.transmission === transmission)
     if (maxMileage) cars = cars.filter((c) => c.mileage <= Number(maxMileage.replace(/,/g, '')))
