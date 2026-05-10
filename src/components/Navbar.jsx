@@ -1,58 +1,36 @@
-import { useState, useEffect } from 'react'
-import { Link, NavLink, useNavigate } from 'react-router-dom'
-import { Car, Menu, X, Bell, ChevronDown, Sparkles } from 'lucide-react'
+import { useState } from 'react'
+import { NavLink, Link } from 'react-router-dom'
 
 const NAV_LINKS = [
-  { label: 'Browse',    to: '/inventory' },
-  { label: 'Sell',      to: '/sell' },
-  { label: 'Finance',   to: '/financing' },
+  { label: 'Inventory', to: '/inventory' },
+  { label: 'Sell Your Car', to: '/sell' },
+  { label: 'Financing', to: '/financing' },
   { label: 'Dashboard', to: '/dashboard' },
 ]
 
 export default function Navbar() {
-  const [scrolled, setScrolled]   = useState(false)
-  const [mobileOpen, setMobile]   = useState(false)
-  const navigate = useNavigate()
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20)
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+  const [mobileOpen, setMobileOpen] = useState(false)
 
   return (
     <>
-      <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300
-          ${scrolled
-            ? 'glass border-b border-white/[0.06] shadow-[0_4px_32px_rgba(0,0,0,0.4)]'
-            : 'bg-transparent'
-          }`}
-      >
-        <nav className="max-w-7xl mx-auto px-4 sm:px-6 h-[72px] flex items-center justify-between gap-6">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-surface/90 backdrop-blur-md border-b border-[#c2c6d6]/20 shadow-sm">
+        <nav className="max-w-[1280px] mx-auto px-6 h-20 flex items-center justify-between gap-6">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2.5 group shrink-0">
-            <div className="w-9 h-9 rounded-xl bg-primary-500 flex items-center justify-center
-                            shadow-glow-blue group-hover:shadow-[0_0_20px_rgba(59,130,246,0.6)]
-                            transition-shadow duration-300">
-              <Car size={18} className="text-white" strokeWidth={2.5} />
-            </div>
-            <span className="text-white font-bold text-lg tracking-tight">
-              Auto<span className="gradient-text">Premium</span>
-            </span>
+          <Link to="/" className="flex items-center gap-2 shrink-0">
+            <span className="text-on-background text-2xl font-bold tracking-tight">AutoPremium</span>
           </Link>
 
-          {/* Desktop links */}
+          {/* Desktop nav links */}
           <ul className="hidden md:flex items-center gap-1">
             {NAV_LINKS.map(({ label, to }) => (
               <li key={label}>
                 <NavLink
                   to={to}
                   className={({ isActive }) =>
-                    `px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200
-                    ${isActive
-                      ? 'text-primary-400 bg-primary-500/10'
-                      : 'text-slate-400 hover:text-white hover:bg-white/5'
+                    `px-4 py-2 text-sm font-semibold transition-colors ${
+                      isActive
+                        ? 'text-primary border-b-2 border-primary pb-1'
+                        : 'text-on-surface-variant hover:text-primary'
                     }`
                   }
                 >
@@ -64,67 +42,63 @@ export default function Navbar() {
 
           {/* Right actions */}
           <div className="hidden md:flex items-center gap-3">
-            <button aria-label="Notifications"
-              className="relative w-9 h-9 flex items-center justify-center rounded-lg
-                         text-slate-400 hover:text-white hover:bg-white/5 transition-all">
-              <Bell size={18} />
-              <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-primary-500 rounded-full" />
-            </button>
-
-            <Link to="/dashboard"
-              className="flex items-center gap-2 px-3 py-2 rounded-lg
-                         text-slate-400 hover:text-white hover:bg-white/5 transition-all text-sm font-medium">
-              Sign In
-              <ChevronDown size={14} />
-            </Link>
-
-            <Link to="/sell" className="btn-primary text-sm py-2.5">
-              <Sparkles size={15} />
-              List Your Car
+            <Link
+              to="/"
+              className="px-5 py-2 rounded-xl bg-primary text-on-primary text-sm font-semibold hover:bg-primary-container transition-colors"
+            >
+              Contact Us
             </Link>
           </div>
 
-          {/* Mobile menu toggle */}
-          <button onClick={() => setMobile(!mobileOpen)}
-            className="md:hidden w-9 h-9 flex items-center justify-center rounded-lg
-                       text-slate-400 hover:text-white hover:bg-white/5 transition-all"
-            aria-label="Toggle menu">
-            {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+          {/* Mobile hamburger */}
+          <button
+            onClick={() => setMobileOpen(!mobileOpen)}
+            className="md:hidden w-10 h-10 flex items-center justify-center rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface-container transition-all"
+            aria-label="Toggle menu"
+          >
+            <span className="material-symbols-outlined text-[22px]">
+              {mobileOpen ? 'close' : 'menu'}
+            </span>
           </button>
         </nav>
       </header>
 
       {/* Mobile drawer */}
-      <div className={`fixed inset-0 z-40 md:hidden transition-all duration-300
-          ${mobileOpen ? 'pointer-events-auto' : 'pointer-events-none'}`}>
-        <div
-          className={`absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-300
-            ${mobileOpen ? 'opacity-100' : 'opacity-0'}`}
-          onClick={() => setMobile(false)}
-        />
-        <aside
-          className={`absolute top-0 right-0 h-full w-72 glass border-l border-white/[0.07]
-                      flex flex-col pt-20 pb-8 px-6 gap-2 transition-transform duration-300
-            ${mobileOpen ? 'translate-x-0' : 'translate-x-full'}`}>
-          {NAV_LINKS.map(({ label, to }) => (
-            <NavLink key={label} to={to} onClick={() => setMobile(false)}
-              className={({ isActive }) =>
-                `px-4 py-3 rounded-xl font-medium transition-all
-                ${isActive ? 'text-primary-300 bg-primary-500/10' : 'text-slate-300 hover:text-white hover:bg-white/5'}`
-              }>
-              {label}
-            </NavLink>
-          ))}
-          <div className="mt-auto flex flex-col gap-3">
-            <Link to="/dashboard" onClick={() => setMobile(false)} className="btn-ghost w-full justify-center">
-              Sign In
-            </Link>
-            <Link to="/sell" onClick={() => setMobile(false)} className="btn-primary justify-center">
-              <Sparkles size={15} /> List Your Car
-            </Link>
-          </div>
-        </aside>
-      </div>
+      {mobileOpen && (
+        <div className="fixed inset-0 z-40 md:hidden">
+          <div
+            className="absolute inset-0 bg-black/30 backdrop-blur-sm"
+            onClick={() => setMobileOpen(false)}
+          />
+          <aside className="absolute top-0 right-0 h-full w-72 bg-surface border-l border-[#c2c6d6]/20 flex flex-col pt-24 pb-8 px-6 gap-2 shadow-xl">
+            {NAV_LINKS.map(({ label, to }) => (
+              <NavLink
+                key={label}
+                to={to}
+                onClick={() => setMobileOpen(false)}
+                className={({ isActive }) =>
+                  `px-4 py-3 rounded-xl text-sm font-semibold transition-colors ${
+                    isActive
+                      ? 'text-primary bg-primary-fixed/40'
+                      : 'text-on-surface-variant hover:text-primary hover:bg-surface-container'
+                  }`
+                }
+              >
+                {label}
+              </NavLink>
+            ))}
+            <div className="mt-auto">
+              <Link
+                to="/"
+                onClick={() => setMobileOpen(false)}
+                className="block w-full text-center px-5 py-3 rounded-xl bg-primary text-on-primary text-sm font-semibold"
+              >
+                Contact Us
+              </Link>
+            </div>
+          </aside>
+        </div>
+      )}
     </>
   )
 }

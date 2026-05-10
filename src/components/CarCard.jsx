@@ -1,137 +1,87 @@
 import { Link } from 'react-router-dom'
-import { Heart, Fuel, Gauge, Zap, Star, ArrowUpRight } from 'lucide-react'
 import { useState } from 'react'
 
-const BADGE_STYLES = {
-  blue:   'bg-primary-500/20 text-primary-300 border-primary-500/30',
-  red:    'bg-red-500/20 text-red-300 border-red-500/30',
-  purple: 'bg-purple-500/20 text-purple-300 border-purple-500/30',
-  orange: 'bg-orange-500/20 text-orange-300 border-orange-500/30',
-  green:  'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
-  gold:   'bg-yellow-500/20 text-yellow-300 border-yellow-500/30',
-  teal:   'bg-teal-500/20 text-teal-300 border-teal-500/30',
-}
+const fmtPrice = (n) =>
+  new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(n)
 
-export default function CarCard({ car, featured = false }) {
+const fmtMiles = (n) =>
+  new Intl.NumberFormat('en-US').format(n) + ' mi'
+
+export default function CarCard({ car }) {
   const [liked, setLiked] = useState(false)
-  const [imgError, setImgError] = useState(false)
-
-  const fmtPrice = (n) =>
-    new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(n)
-
-  const fmtMiles = (n) =>
-    new Intl.NumberFormat('en-US').format(n) + ' mi'
 
   return (
-    <Link
-      to={`/inventory/${car.id}`}
-      className={`group relative glass-card rounded-2xl overflow-hidden block
-                  transition-all duration-500 ease-out
-                  hover:shadow-card-hover hover:-translate-y-1.5
-                  hover:border-white/[0.12]
-                  ${featured ? 'ring-1 ring-primary-500/20' : ''}`}
-    >
-      {/* Image container */}
-      <div className="relative aspect-[16/10] overflow-hidden bg-surface-high">
-        {!imgError ? (
-          <img
-            src={car.image}
-            alt={`${car.year} ${car.make} ${car.model}`}
-            loading="lazy"
-            className="w-full h-full object-cover object-center
-                       transition-transform duration-700 ease-out
-                       group-hover:scale-110"
-            onError={() => setImgError(true)}
-          />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center bg-surface-high">
-            <span className="text-slate-600 text-sm">{car.make} {car.model}</span>
-          </div>
-        )}
-
-        {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-
-        {/* Badge */}
-        <span className={`badge absolute top-3 left-3 border ${BADGE_STYLES[car.badgeColor] || BADGE_STYLES.blue}`}>
+    <div className="bg-surface-container-lowest rounded-xl border border-[#c2c6d6]/15 overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 group">
+      {/* Image */}
+      <div className="relative aspect-video overflow-hidden bg-surface-container">
+        <img
+          src={car.image}
+          alt={`${car.year} ${car.make} ${car.model}`}
+          loading="lazy"
+          className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+        />
+        {/* Badge top-left */}
+        <span className="absolute top-3 left-3 bg-primary text-on-primary text-xs font-semibold px-xs py-1 rounded-full">
           {car.badge}
         </span>
-
-        {/* Wishlist button */}
+        {/* Wishlist heart top-right */}
         <button
-          aria-label={liked ? `Remove ${car.make} ${car.model} from wishlist` : `Save ${car.make} ${car.model} to wishlist`}
-          onClick={(e) => { e.preventDefault(); setLiked(!liked) }}
-          className={`absolute top-3 right-3 w-8 h-8 rounded-full flex items-center justify-center
-                      backdrop-blur-sm border transition-all duration-200
-                      ${liked
-                        ? 'bg-red-500/30 border-red-500/50 text-red-400'
-                        : 'bg-black/30 border-white/10 text-slate-400 hover:text-white'
-                      }`}
+          aria-label={liked ? 'Remove from wishlist' : 'Add to wishlist'}
+          onClick={() => setLiked(!liked)}
+          className="absolute top-3 right-3 w-8 h-8 rounded-[9999px] bg-surface/90 backdrop-blur-sm flex items-center justify-center shadow-sm border border-[#c2c6d6]/20 transition-colors hover:bg-surface"
         >
-          <Heart size={14} fill={liked ? 'currentColor' : 'none'} />
+          <span
+            className="material-symbols-outlined text-[18px]"
+            style={{ fontVariationSettings: liked ? "'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24" : "'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24" }}
+          >
+            favorite
+          </span>
         </button>
-
-        {/* Price badge on image */}
-        <div className="absolute bottom-3 right-3 px-3 py-1.5 rounded-xl
-                        bg-black/50 backdrop-blur-sm border border-white/10">
-          <span className="text-white font-bold text-sm">{fmtPrice(car.price)}</span>
-        </div>
       </div>
 
-      {/* Content */}
-      <div className="p-4">
-        {/* Header row */}
-        <div className="flex items-start justify-between gap-2 mb-3">
-          <div>
-            <p className="text-xs font-semibold text-primary-400 uppercase tracking-widest mb-0.5">
-              {car.make}
-            </p>
-            <h3 className="text-white font-bold text-base leading-tight">
-              {car.model}
-            </h3>
-            <p className="text-slate-500 text-xs mt-0.5">{car.year} · {car.color}</p>
-          </div>
-          <div className="flex items-center gap-1 shrink-0">
-            <Star size={12} className="text-yellow-400" fill="currentColor" />
-            <span className="text-slate-300 text-xs font-semibold">{car.rating}</span>
-            <span className="text-slate-600 text-xs">({car.reviews})</span>
-          </div>
+      {/* Content area */}
+      <div className="p-md">
+        {/* Car name */}
+        <h3 className="font-semibold text-lg text-on-surface mb-2 leading-tight">
+          {car.year} {car.make} {car.model}
+        </h3>
+
+        {/* Chips */}
+        <div className="flex flex-wrap gap-1 mb-3">
+          <span className="bg-surface-container text-on-secondary-container text-xs px-xs py-1 rounded-full">{car.bodyStyle}</span>
+          <span className="bg-surface-container text-on-secondary-container text-xs px-xs py-1 rounded-full">{car.fuel}</span>
+          <span className="bg-surface-container text-on-secondary-container text-xs px-xs py-1 rounded-full">{car.transmission}</span>
         </div>
+
+        {/* Price */}
+        <p className="text-primary font-extrabold text-2xl tracking-tight mb-3">{fmtPrice(car.price)}</p>
 
         {/* Specs row */}
-        <div className="flex items-center gap-3 mb-4 pb-4 border-b border-white/[0.06]">
-          <div className="flex items-center gap-1.5 text-slate-400 text-xs">
-            <Gauge size={12} className="text-slate-500" />
-            {fmtMiles(car.mileage)}
+        <div className="grid grid-cols-3 gap-2 mb-4 pb-3 border-b border-[#c2c6d6]/15">
+          <div className="flex flex-col items-center gap-0.5">
+            <span className="material-symbols-outlined text-[18px] text-on-surface-variant">calendar_today</span>
+            <span className="text-label-sm text-on-surface-variant">{car.year}</span>
           </div>
-          <div className="flex items-center gap-1.5 text-slate-400 text-xs">
-            <Fuel size={12} className="text-slate-500" />
-            {car.fuel}
+          <div className="flex flex-col items-center gap-0.5">
+            <span className="material-symbols-outlined text-[18px] text-on-surface-variant">speed</span>
+            <span className="text-label-sm text-on-surface-variant">{fmtMiles(car.mileage)}</span>
           </div>
-          <div className="flex items-center gap-1.5 text-slate-400 text-xs">
-            <Zap size={12} className="text-slate-500" />
-            {car.specs.power}
+          <div className="flex flex-col items-center gap-0.5">
+            <span className="material-symbols-outlined text-[18px] text-on-surface-variant">
+              {car.fuel === 'Electric' ? 'bolt' : 'local_gas_station'}
+            </span>
+            <span className="text-label-sm text-on-surface-variant">{car.fuel}</span>
           </div>
         </div>
 
-        {/* Footer */}
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-slate-500 text-[11px] uppercase tracking-wider">Price</p>
-            <p className="text-white font-black text-xl tracking-tight">{fmtPrice(car.price)}</p>
-          </div>
-          <span
-            className="flex items-center gap-1.5 px-4 py-2 rounded-xl
-                       bg-primary-500/10 border border-primary-500/25
-                       text-primary-400 text-xs font-semibold
-                       group-hover:bg-primary-500 group-hover:text-white group-hover:border-transparent
-                       transition-all duration-200"
-          >
-            View Details
-            <ArrowUpRight size={13} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-          </span>
-        </div>
+        {/* View Details button */}
+        <Link
+          to={`/inventory/${car.id}`}
+          className="block w-full text-center border border-primary text-primary py-sm rounded-xl text-sm font-semibold hover:bg-primary hover:text-on-primary transition-all duration-200"
+        >
+          View Details
+        </Link>
       </div>
-    </Link>
+    </div>
   )
 }

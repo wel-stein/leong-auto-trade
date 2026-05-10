@@ -1,40 +1,34 @@
 import { NavLink } from 'react-router-dom'
-import { Search, Tag, Calculator, LayoutDashboard, Home } from 'lucide-react'
 
 const ITEMS = [
-  { to: '/',          icon: Home,          label: 'Home'      },
-  { to: '/inventory', icon: Search,        label: 'Browse'    },
-  { to: '/sell',      icon: Tag,           label: 'Sell'      },
-  { to: '/financing', icon: Calculator,    label: 'Finance'   },
-  { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+  { to: '/', icon: 'home', label: 'Home' },
+  { to: '/inventory', icon: 'directions_car', label: 'Inventory' },
+  { to: '/sell', icon: 'sell', label: 'Sell' },
+  { to: '/dashboard', icon: 'person', label: 'Profile' },
 ]
 
 export default function BottomNav() {
   return (
     <nav
       aria-label="Mobile navigation"
-      className="md:hidden fixed bottom-0 left-0 right-0 z-50
-                 glass border-t border-white/[0.08]
-                 flex items-center justify-around
-                 px-2 py-2 safe-bottom"
+      className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-surface border-t border-[#c2c6d6]/20 flex justify-around items-center px-4 py-3 shadow-lg"
     >
-      {ITEMS.map(({ to, icon: Icon, label }) => (
+      {ITEMS.map(({ to, icon, label }) => (
         <NavLink
           key={to}
           to={to}
           end={to === '/'}
           aria-label={label}
           className={({ isActive }) =>
-            `flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl
-             transition-all duration-200 min-w-[52px]
-             ${isActive
-               ? 'text-primary-400 bg-primary-500/10'
-               : 'text-slate-500 hover:text-slate-300'
-             }`
+            `flex flex-col items-center gap-0.5 transition-all duration-200 ${
+              isActive
+                ? 'text-primary font-semibold bg-[#2170e4]/10 rounded-xl px-3 py-1'
+                : 'text-on-secondary-container opacity-70 px-3 py-1'
+            }`
           }
         >
-          <Icon size={20} strokeWidth={1.8} />
-          <span className="text-[10px] font-semibold tracking-wide">{label}</span>
+          <span className="material-symbols-outlined text-[22px]">{icon}</span>
+          <span className="text-xs">{label}</span>
         </NavLink>
       ))}
     </nav>
